@@ -1,0 +1,1 @@
+import './globals.css';export const metadata={title:'NUTTY X-MAS MARKET',description:'호두까기 인형의 크리스마스 장난감 상점'};export default function RootLayout({children}){return <html lang="ko"><body>{children}</body></html>}
