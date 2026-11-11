@@ -201,3 +201,22 @@
  .admin-page .admin-product-actions{width:100%;justify-content:flex-end}
  .admin-topup-row{flex-wrap:wrap}
 }
+
+
+/* Compact circular account actions */
+.account{gap:8px}
+.account .account-greeting{white-space:nowrap}
+.account .account-icon-button{
+ width:34px;height:34px;min-width:34px;padding:0;
+ display:inline-grid;place-items:center;
+ border:1px solid var(--gold);border-radius:50%;
+ background:#fffaf2;color:var(--wine);
+}
+.account .account-icon-button:hover{background:#f6ead8}
+.modal-card form{display:flex;flex-direction:column;gap:10px}
+.modal-card form input{width:100%}
+@media(max-width:600px){
+ .account{gap:5px}
+ .account .account-icon-button{width:31px;height:31px;min-width:31px}
+ .account .account-greeting{white-space:normal}
+}
