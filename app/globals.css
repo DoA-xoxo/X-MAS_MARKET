@@ -128,3 +128,16 @@
  .quantity{gap:4px}
  .quantity button{width:22px;height:22px}
 }
+
+/* Restore the previous cart thumbnail size on desktop and mobile */
+.cart-row{display:flex;align-items:center;justify-content:space-between;gap:15px}
+.cart-image{width:68px;height:68px;max-width:68px;max-height:68px;flex:none;object-fit:contain;background:#f7e8d4;border:1px solid #ead7bd;border-radius:8px;padding:4px}
+.cart-image-empty{display:grid;place-items:center;font-size:28px}
+@media(max-width:600px){
+ .cart-row{display:flex;gap:8px;align-items:center;padding:9px}
+ .cart-image{width:54px;height:54px;max-width:54px;max-height:54px}
+ .cart-row>b{min-width:0;font-size:13px}
+ .cart-row strong{font-size:11px}
+ .quantity{gap:5px}
+ .quantity button{width:24px;height:24px}
+}
