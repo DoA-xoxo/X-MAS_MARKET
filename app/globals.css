@@ -110,3 +110,7 @@
 .history-image{width:76px;height:76px;flex:none;object-fit:contain;background:#f7e8d4;border:1px solid #ead7bd;border-radius:8px;padding:4px}
 .history-details{flex:1;min-width:0}
 @media(max-width:600px){.history{gap:8px;align-items:center}.history-image{width:60px;height:60px}.history button{flex:none}}
+
+.cart-image{width:68px;height:68px;flex:none;object-fit:contain;background:#f7e8d4;border:1px solid #ead7bd;border-radius:8px;padding:4px}
+.cart-image-empty{display:grid;place-items:center;font-size:28px}
+@media(max-width:600px){.cart-row{gap:8px;padding:9px}.cart-image{width:54px;height:54px}.cart-row>b{min-width:0;font-size:13px}.cart-row strong{font-size:11px}.quantity{gap:5px}.quantity button{width:24px;height:24px}}
