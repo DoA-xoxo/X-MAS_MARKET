@@ -75,3 +75,21 @@
 /* Add breathing room between the subtitle and navigation buttons */
 .shell header nav{margin-top:30px}
 @media(max-width:600px){.shell header nav{margin-top:22px}}
+
+
+/* Center the gift action label and style the login/signup switch */
+.actions .secondary{
+  justify-content:center;
+  text-align:center;
+}
+.auth-switch{
+  display:block;
+  margin:14px auto 0;
+  padding:7px 12px;
+  border:0;
+  background:transparent;
+  color:var(--wine);
+  font-size:12px;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
