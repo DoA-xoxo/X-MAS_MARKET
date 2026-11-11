@@ -150,3 +150,54 @@
 
 /* Keep 안내 toast above the admin and other modal overlays */
 .toast{z-index:50}
+
+
+/* Dedicated admin page */
+.admin-page{max-width:980px;min-height:100vh;margin:0 auto;padding:22px 20px 60px;color:var(--ink)}
+.admin-page-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.admin-page-header>div{display:flex;align-items:center;gap:8px;color:var(--wine);font-size:11px;letter-spacing:2px}
+.admin-page-header>div svg{color:var(--gold)}
+.admin-login-card{width:min(420px,100%);margin:12vh auto 0;padding:34px 28px;background:var(--paper);border:1px solid var(--gold);border-radius:12px;text-align:center}
+.admin-login-mark{font-size:27px;color:var(--gold);margin-bottom:8px}
+.admin-login-card>small,.admin-dashboard-title small{font-size:10px;letter-spacing:2px;color:#a56a3e}
+.admin-login-card h1,.admin-dashboard-title h1{font:600 25px 'Noto Serif KR',serif;color:var(--wine);margin:9px 0}
+.admin-login-card p,.admin-dashboard-title p{font-size:12px;color:#987b69}
+.admin-login-card form{display:flex;flex-direction:column;gap:9px;margin-top:22px}
+.admin-login-card input{width:100%;border:1px solid #e1c8a8;border-radius:7px;padding:12px;background:#fffdf9}
+.admin-login-card .primary{width:100%;padding:12px}
+.admin-dashboard{display:flex;flex-direction:column;gap:16px;margin-top:24px}
+.admin-dashboard-title{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.admin-dashboard-title h1{margin:5px 0}
+.admin-dashboard-title p{margin:0}
+.admin-panel{background:var(--paper);border:1px solid var(--gold);border-radius:11px;padding:19px}
+.admin-panel h2{display:flex;align-items:center;gap:8px;font:600 17px 'Noto Serif KR',serif;color:var(--wine);margin:0 0 14px}
+.admin-panel h2 span{font:11px 'DM Sans',sans-serif;color:#a56a3e}
+.admin-upload-form{display:grid;grid-template-columns:1.1fr 1.4fr .7fr 1.2fr auto;gap:8px;align-items:center}
+.admin-upload-form>input{min-width:0;width:100%;border:1px solid #e1c8a8;border-radius:7px;padding:10px;background:#fffdf9;font-size:12px}
+.admin-file-label{min-width:0;display:flex;align-items:center;gap:6px;border:1px dashed #d7b98f;border-radius:7px;padding:9px;font-size:11px;color:#8b6549;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;cursor:pointer}
+.admin-file-label input{display:none}
+.admin-upload-form .primary{white-space:nowrap}
+.admin-page .admin-products{margin:0}
+.admin-page .admin-product-actions{justify-content:flex-end}
+.admin-page .delete-product{display:inline-flex;align-items:center;gap:4px}
+.admin-topup-row{display:flex;align-items:center;gap:8px;padding:11px 0;border-top:1px solid #f0e2cf}
+.admin-topup-row>div{display:flex;flex:1;flex-direction:column;gap:4px}
+.admin-topup-row b{font-size:12px;color:var(--wine)}
+.admin-topup-row small{font-size:10px;color:#987b69}
+.admin-topup-row button{display:inline-flex;align-items:center;gap:4px;border:1px solid #c9a77d;border-radius:18px;background:transparent;color:var(--wine);padding:7px 10px;font-size:10px}
+.admin-topup-row .topup-approve{background:var(--wine);border-color:var(--wine);color:#fff8ef}
+.admin-topup-row .topup-reject{border-color:#c98b82;color:#9d3737}
+@media(max-width:700px){
+ .admin-page{padding:14px 12px 45px}
+ .admin-page-header{padding-bottom:13px}
+ .admin-login-card{margin-top:9vh;padding:28px 19px}
+ .admin-dashboard{margin-top:17px}
+ .admin-dashboard-title{align-items:flex-end}
+ .admin-panel{padding:14px 11px}
+ .admin-upload-form{grid-template-columns:1fr 1fr}
+ .admin-upload-form>input:first-child,.admin-upload-form>input:nth-child(2){grid-column:span 2}
+ .admin-upload-form .primary{width:100%}
+ .admin-page .admin-product{flex-wrap:wrap}
+ .admin-page .admin-product-actions{width:100%;justify-content:flex-end}
+ .admin-topup-row{flex-wrap:wrap}
+}
