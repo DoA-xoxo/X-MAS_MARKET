@@ -3,7 +3,7 @@ export const runtime='nodejs';
 
 export async function GET(req){
   try{
-    admin(req);
+    await admin();
     const s=db();
     const {data,error}=await s.from('market_items').select('id,name,price,image_path,active,created_at').order('sort_order',{ascending:true});
     if(error)throw error;
@@ -13,7 +13,7 @@ export async function GET(req){
 
 export async function POST(req){
   try{
-    admin(req);
+    await admin();
     const f=await req.formData(),name=String(f.get('name')||'').trim(),description=String(f.get('description')||''),price=Number(f.get('price')),file=f.get('file');
     if(!name||!Number.isSafeInteger(price)||price<1||!file||file.type!=='image/png')return err('상품명, 가격, PNG 파일을 확인해 주세요.');
     if(file.size>5242880)return err('PNG는 5MB 이하만 등록할 수 있습니다.');
@@ -28,7 +28,7 @@ export async function POST(req){
 
 export async function DELETE(req){
   try{
-    admin(req);
+    await admin();
     const url=new URL(req.url),id=url.searchParams.get('id'),mode=url.searchParams.get('mode')||'archive';
     if(!id)return err('삭제할 상품을 선택해 주세요.');
     if(!['archive','hard'].includes(mode))return err('삭제 방식을 확인해 주세요.');
