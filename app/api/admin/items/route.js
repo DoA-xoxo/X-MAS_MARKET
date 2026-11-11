@@ -29,22 +29,28 @@ export async function POST(req){
 export async function DELETE(req){
   try{
     admin(req);
-    const id=new URL(req.url).searchParams.get('id');
+    const url=new URL(req.url),id=url.searchParams.get('id'),mode=url.searchParams.get('mode')||'archive';
     if(!id)return err('삭제할 상품을 선택해 주세요.');
+    if(!['archive','hard'].includes(mode))return err('삭제 방식을 확인해 주세요.');
     const s=db();
     const {data:item,error:findError}=await s.from('market_items').select('id,image_path,active').eq('id',id).maybeSingle();
     if(findError)throw findError;
     if(!item)return err('상품을 찾을 수 없습니다.',404);
-    const {data:order,error:orderError}=await s.from('market_orders').select('id').eq('item_id',id).limit(1).maybeSingle();
-    if(orderError)throw orderError;
-    if(order){
+    if(mode==='archive'){
       const {error}=await s.from('market_items').update({active:false}).eq('id',id);
       if(error)throw error;
-      return Response.json({ok:true,archived:true});
+      return Response.json({ok:true,archived:true,deleted:false});
     }
+    const {error:cartError}=await s.from('market_cart_items').delete().eq('item_id',id);
+    if(cartError)throw cartError;
+    const {error:orderError}=await s.from('market_orders').delete().eq('item_id',id);
+    if(orderError)throw orderError;
     const {error:deleteError}=await s.from('market_items').delete().eq('id',id);
     if(deleteError)throw deleteError;
-    if(item.image_path){const {error:storageError}=await s.storage.from('market-items').remove([item.image_path]);if(storageError)throw storageError}
-    return Response.json({ok:true,archived:false});
+    if(item.image_path){
+      const {error:storageError}=await s.storage.from('market-items').remove([item.image_path]);
+      if(storageError)throw storageError;
+    }
+    return Response.json({ok:true,archived:false,deleted:true});
   }catch(e){return err(e.message,e.status||500)}
 }
