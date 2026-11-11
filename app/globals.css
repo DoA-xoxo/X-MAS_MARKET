@@ -71,3 +71,7 @@
   .hero{margin-top:8px;padding:8px 0}
   .marquee .market-title-logo{max-width:260px;max-height:90px}
 }
+
+/* Add breathing room between the subtitle and navigation buttons */
+.shell header nav{margin-top:30px}
+@media(max-width:600px){.shell header nav{margin-top:22px}}
