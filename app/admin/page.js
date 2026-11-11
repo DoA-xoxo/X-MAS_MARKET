@@ -1,10 +1,11 @@
 'use client';
-import {useEffect,useState} from 'react';
+import {useEffect,useRef,useState} from 'react';
 import {ArrowLeft,LogOut,Settings,Upload,Trash2,Archive,Check,X,RefreshCw} from 'lucide-react';
 
 const fmt=n=>new Intl.NumberFormat('ko-KR').format(Number(n||0));
 
 export default function AdminPage(){
+ const uploadForm=useRef(null);
  const [ready,R]=useState(false),[authenticated,A]=useState(false),[password,P]=useState(''),[message,M]=useState(''),[busy,B]=useState(false);
  const [items,I]=useState([]),[requests,Q]=useState([]),[product,PR]=useState({name:'',description:'',price:'100',file:null});
  async function api(url,opt={}){
@@ -46,7 +47,7 @@ export default function AdminPage(){
  async function upload(e){
   e.preventDefault();if(!product.file){M('PNG 파일을 선택해 주세요.');return}
   const form=new FormData();form.append('name',product.name);form.append('description',product.description);form.append('price',product.price);form.append('file',product.file);
-  try{await api('/api/admin/items',{method:'POST',body:form});PR({name:'',description:'',price:'100',file:null});e.currentTarget.reset();await loadData();M('상품을 등록했어요.')}
+  try{await api('/api/admin/items',{method:'POST',body:form});PR({name:'',description:'',price:'100',file:null});uploadForm.current?.reset();await loadData();M('상품을 등록했어요.')}
   catch(e){M(e.message)}
  }
  async function review(id,status){
@@ -66,7 +67,7 @@ export default function AdminPage(){
    <form onSubmit={login}><input type="password" autoComplete="current-password" placeholder="관리자 비밀번호" value={password} onChange={e=>P(e.target.value)} required/><button className="primary" disabled={busy}>{busy?'확인 중…':'로그인'}</button></form>
   </section>:<section className="admin-dashboard">
    <div className="admin-dashboard-title"><div><small>THE CHRISTMAS TOY SHOP</small><h1>관리자 페이지</h1><p>상품과 코인 충전 신청을 관리합니다.</p></div><button className="secondary" onClick={refresh}><RefreshCw size={14}/> 새로고침</button></div>
-   <section className="admin-panel"><h2>상품 PNG 등록</h2><form className="admin-upload-form" onSubmit={upload}>
+   <section className="admin-panel"><h2>상품 PNG 등록</h2><form ref={uploadForm} className="admin-upload-form" onSubmit={upload}>
     <input placeholder="상품명" value={product.name} onChange={e=>PR({...product,name:e.target.value})} required/>
     <input placeholder="상품 설명" value={product.description} onChange={e=>PR({...product,description:e.target.value})}/>
     <input type="number" min="1" placeholder="가격" value={product.price} onChange={e=>PR({...product,price:e.target.value})} required/>
