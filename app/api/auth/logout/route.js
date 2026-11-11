@@ -1,0 +1,1 @@
+import {logoutSession} from '@/lib/server';export async function POST(){await logoutSession();return Response.json({ok:true})}
