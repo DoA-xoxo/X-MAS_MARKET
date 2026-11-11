@@ -141,3 +141,8 @@
  .quantity{gap:5px}
  .quantity button{width:24px;height:24px}
 }
+
+
+.admin-product-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.admin-product-actions .delete-product{white-space:nowrap}
+.admin-product-actions .hard-delete{background:#fff;border:1px solid #a33;color:#8d2630}
