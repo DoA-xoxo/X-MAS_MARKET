@@ -146,3 +146,7 @@
 .admin-product-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .admin-product-actions .delete-product{white-space:nowrap}
 .admin-product-actions .hard-delete{background:#fff;border:1px solid #a33;color:#8d2630}
+
+
+/* Keep 안내 toast above the admin and other modal overlays */
+.toast{z-index:50}
