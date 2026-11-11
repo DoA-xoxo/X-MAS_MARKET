@@ -6,7 +6,7 @@ const fmt=n=>new Intl.NumberFormat('ko-KR').format(Number(n||0));
 export default function Home(){
 const [user,U]=useState(null),[authReady,AR]=useState(false),[items,I]=useState([]),[tab,T]=useState('shop'),[cart,C]=useState([]),[records,R]=useState({purchases:[],gifts:[]}),[rt,RT]=useState('purchases'),[msg,M]=useState(''),[login,L]=useState({nickname:'',password:''}),[authMode,AM]=useState('login'),[topup,TP]=useState(''),[gift,G]=useState({nickname:'',anonymous:false,message:''}),[showGift,SG]=useState(false),[showTopup,ST]=useState(false),[admin,A]=useState(false),[pass,AP]=useState(''),[requests,Q]=useState([]),[adminItems,AI]=useState([]),[product,P]=useState({name:'',description:'',price:'100',file:null});
 async function api(url,opt={}){const r=await fetch(url,{...opt,headers:{...(opt.body instanceof FormData?{}:{'Content-Type':'application/json'}),...(opt.headers||{})}});const d=await r.json();if(!r.ok)throw Error(d.error||'요청에 실패했어요.');return d}
-async function refresh(){const d=await api('/api/auth/me');U(d.user);const p=await api('/api/items');I(p.items?.length?p.items:sample.map((x,i)=>({id:'sample-'+i,name:x[0],description:x[1],price:x[2],symbol:x[3]})));if(d.user)R(await api('/api/records'))}
+async function refresh(){const [d,p]=await Promise.all([api('/api/auth/me'),api('/api/items')]);U(d.user);I(p.items?.length?p.items:sample.map((x,i)=>({id:'sample-'+i,name:x[0],description:x[1],price:x[2],symbol:x[3]})));if(d.user)api('/api/records').then(R).catch(()=>{});else R({purchases:[],gifts:[]})}
 useEffect(()=>{refresh().catch(()=>{}).finally(()=>AR(true))},[]);
 async function signIn(e){e.preventDefault();try{await api('/api/auth/login',{method:'POST',body:JSON.stringify(login)});await refresh();M('어서 와요!')}catch(e){M(e.message)}}
 async function signUp(e){e.preventDefault();try{await api('/api/auth/register',{method:'POST',body:JSON.stringify(login)});await refresh();M('회원가입이 완료되었어요!')}catch(e){M(e.message)}}
@@ -18,20 +18,18 @@ async function deleteItem(id){if(!confirm('이 상품을 상점에서 삭제할�
 async function upload(e){e.preventDefault();const f=new FormData();f.append('name',product.name);f.append('description',product.description);f.append('price',product.price);f.append('file',product.file);try{await api('/api/admin/items',{method:'POST',body:f,headers:{'x-market-admin':pass}});await refresh();await adminCheck();M('상품을 등록했어요.')}catch(e){M(e.message)}}
 async function review(id,status){try{await api('/api/admin/topups',{method:'PATCH',body:JSON.stringify({id,status}),headers:{'x-market-admin':pass}});await adminCheck()}catch(e){M(e.message)}}
 async function download(id,name='nutty-xmas-item'){
+ const url='/api/download?id='+encodeURIComponent(id);
+ const safeName=String(name).replace(/[\\/:*?"<>|]/g,'_').slice(0,80)+'.png';
+ const isMobile=navigator.userAgentData?.mobile||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+ if(!isMobile){
+  const a=document.createElement('a');a.href=url;a.download=safeName;document.body.appendChild(a);a.click();a.remove();return;
+ }
  try{
-  const response=await fetch('/api/download?id='+encodeURIComponent(id));
+  const response=await fetch(url);
   if(!response.ok){const d=await response.json().catch(()=>({}));throw Error(d.error||'이미지를 불러오지 못했어요.')}
-  const blob=await response.blob();
-  const safeName=String(name).replaceAll('/','_').replaceAll('\\','_').slice(0,80)+'.png';
-  const file=new File([blob],safeName,{type:'image/png'});
-  const isMobile=navigator.userAgentData?.mobile||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  if(isMobile&&navigator.share&&navigator.canShare?.({files:[file]})){
-    await navigator.share({files:[file],title:'NUTTY X-MAS MARKET'});
-    return;
-  }
-  const url=URL.createObjectURL(blob),a=document.createElement('a');
-  a.href=url;a.download=safeName;document.body.appendChild(a);a.click();a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),1500);
+  const blob=await response.blob(),file=new File([blob],safeName,{type:'image/png'});
+  if(navigator.share&&navigator.canShare?.({files:[file]})){await navigator.share({files:[file],title:'NUTTY X-MAS MARKET'});return}
+  const objectUrl=URL.createObjectURL(blob),a=document.createElement('a');a.href=objectUrl;a.download=safeName;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(objectUrl),1000);
  }catch(e){if(e.name!=='AbortError')M(e.message)}
 }
 if(!authReady)return <main className="auth-loading"/>;
